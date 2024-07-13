@@ -1,4 +1,7 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
 
@@ -6,21 +9,24 @@ public class Main {
     static int[] dx = {-1, 1, 0, 0}, dy = {0, 0, -1, 1};
     static boolean visited[][];
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        n = sc.nextInt();
-        m = sc.nextInt();
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+
         paper = new int[n][m];
         visited = new boolean[n][m];
+
         for (int i = 0; i < n; i++) {
+            st = new StringTokenizer(br.readLine());
             for (int j = 0; j < m; j++) {
-                paper[i][j] = sc.nextInt();
+                paper[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
         max = -1;
-        // 모든 위치에서 dfs 호출
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 dfs(i, j, 1, paper[i][j]);
@@ -29,7 +35,7 @@ public class Main {
         }
 
         System.out.println(max);
-        sc.close();
+        br.close();
     }
 
     static void dfs(int x, int y, int idx, int sum) {
@@ -73,6 +79,4 @@ public class Main {
             max = Math.max(max, temp4);
         }
     }
-
-
 }
