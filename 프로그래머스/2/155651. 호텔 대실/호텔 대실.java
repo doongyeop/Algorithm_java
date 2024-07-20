@@ -4,20 +4,17 @@ class Solution {
         int[] using = new int[1450];
         
         for (String[] b : book_time) {
-            String in = b[0];
-            String out = b[1];
+            int inTime = Integer.parseInt(b[0].substring(0, 2)) * 60 + Integer.parseInt(b[0].substring(3, 5));
+            int outTime = Integer.parseInt(b[1].substring(0, 2)) * 60 + Integer.parseInt(b[1].substring(3, 5));
             
-            int inTime = Integer.parseInt(in.split(":")[0]) * 60 + Integer.parseInt(in.split(":")[1]);
-            int outTime = Integer.parseInt(out.split(":")[0]) * 60 + Integer.parseInt(out.split(":")[1]);
-            
-            for (int i = inTime; i < outTime + 10; i++) {
-                using[i]++;
-            }
+            using[inTime] += 1;
+            using[outTime + 10] -= 1;
         }
         
         int answer = 0;
-        for (int i = 0; i < using.length; i++) {
-            answer = Math.max(answer, using[i]);
+        for (int i = 1; i < 1450; i++) {
+            using[i] += using[i - 1];
+            answer = Math.max(using[i], answer);
         }
         
         return answer;
