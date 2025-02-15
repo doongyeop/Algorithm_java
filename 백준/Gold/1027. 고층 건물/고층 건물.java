@@ -1,44 +1,40 @@
-import java.util.Scanner;
+import java.util.*;
 
-class Main { 
-    static int building[], n, answer;
-
-    public static void main(String args[]) {
+public class Main {
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
-        answer = 0;
-        building = new int[n];
-        for (int i = 0; i < n; i++) building[i] = sc.nextInt();
+        int n = sc.nextInt(); // (1 <= n <= 50)
+        int[] buildings = new int[n];
+        for (int i = 0; i < n; i++) buildings[i] = sc.nextInt();
         sc.close();
 
-        for (int i = 0; i < n; i++) visible(i);
+        int max = 0;
 
-        System.out.println(answer);
-    }
-
-    static void visible(int idx) {
-        int cnt = 0;
-        double leftBefore = Integer.MAX_VALUE;
-        double rightBefore = Integer.MIN_VALUE;
-
-        // 왼쪽: 기울기 감소
-        for (int i = idx - 1; i >= 0; i--) {
-            double incline = (double) (building[idx] - building[i]) / (idx - i);
-            if (incline < leftBefore) {
-                cnt++;
-                leftBefore = incline;
+        for (int i = 0; i < n; i++) {
+            int cnt = 0;
+            // 왼쪽
+            double beforeL = Integer.MAX_VALUE;
+            for (int j = i - 1; j >= 0; j--) {
+                double degree = (double) (buildings[j] - buildings[i]) / (j - i);
+                if (degree < beforeL) {
+                    cnt++;
+                    beforeL = degree;
+                }
             }
+
+            // 오른쪽
+            double beforeR = Integer.MIN_VALUE;
+            for (int j = i + 1; j < n; j++) {
+                double degree = (double) (buildings[j] - buildings[i]) / (j - i);
+                if (degree > beforeR) {
+                    cnt++;
+                    beforeR = degree;
+                }
+            }
+
+            max = Math.max(max, cnt);
         }
 
-        // 오른쪽: 기울기 증가
-        for (int i = idx + 1; i < n; i++) {
-            double incline = (double) (building[idx] - building[i]) / (idx - i);
-            if (incline > rightBefore) {
-                cnt++;
-                rightBefore = incline;
-            }
-        }
-
-        answer = Math.max(answer, cnt);
+        System.out.println(max);
     }
 }
