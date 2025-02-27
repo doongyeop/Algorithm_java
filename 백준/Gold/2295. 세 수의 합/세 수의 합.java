@@ -10,13 +10,12 @@ public class Main {
       2개 더하고 하나 찾으면 N^2 
       x + y + z = k
       x + y = k - z
+      수 중복으로 뽑아도 되는거 개열받네ㅋ
       */
       
       int[] nums = new int[n];
       for (int i = 0; i < n; i++) nums[i] = sc.nextInt();
       sc.close();
-      
-      Arrays.sort(nums);
       
       Set<Integer> sum = new HashSet<>();
       for (int i = 0; i < n; i++) {
@@ -26,7 +25,6 @@ public class Main {
       }
       
       int max = Integer.MIN_VALUE;
-      
       for (int i = n - 1; i >= 0; i--) {
           for (int j = i; j >= 0; j--) {
               int minus = nums[i] - nums[j];
