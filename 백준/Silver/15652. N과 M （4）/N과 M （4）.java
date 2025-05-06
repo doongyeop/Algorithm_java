@@ -12,20 +12,22 @@ public class Main {
 
         result = new int[M];
 
-        dfs(0, 1);
+        dfs(0);
         System.out.print(sb);
     }
 
-    private static void dfs(int idx, int start) {
+    private static void dfs(int idx) {
         if (idx == M) {
             for (int r : result) sb.append(r).append(" ");
             sb.append("\n");
             return;
         }
         
-        for (int i = start; i <= N; i++) {
-            result[idx] = i;
-            dfs(idx + 1, i);
+        for (int i = 1; i <= N; i++) {
+            if (idx == 0 || i >= result[idx - 1]) {
+                result[idx] = i;
+                dfs(idx + 1);
+            }
         }
 
     }
