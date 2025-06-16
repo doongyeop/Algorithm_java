@@ -46,7 +46,7 @@ class Main {
             this.end = end;
         }
         
-        @Override // 시작이 작은순 정렬
+        @Override // 끝 큰순 시작이 작은순 정렬
         public int compareTo(Book b) {
             if (this.end == b.end) return this.start - b.start;
             return this.end - b.end;
