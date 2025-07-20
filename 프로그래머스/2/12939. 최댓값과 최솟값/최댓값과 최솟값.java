@@ -2,15 +2,18 @@ import java.util.*;
 
 class Solution {
     public String solution(String s) {
+        String[] nums = s.split(" ");
+        int[] intNums = new int[nums.length];
 
-        String[] str = s. split(" ");
-        int[] nums = new int[str.length];
-        for (int i = 0; i < str.length; i++) {
-            nums[i] = Integer.parseInt(str[i]);
+        for (int i = 0; i < nums.length; i++) {
+            intNums[i] = Integer.parseInt(nums[i]);
         }
-        Arrays.sort(nums);
-        String answer = nums[0] + " " + nums[nums.length - 1];
-        
-        return answer;
+
+        Arrays.sort(intNums);
+
+        int min = intNums[0];
+        int max = intNums[intNums.length - 1];
+
+        return min + " " + max;
     }
 }
