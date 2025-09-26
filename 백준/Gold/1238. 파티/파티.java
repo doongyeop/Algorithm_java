@@ -1,82 +1,77 @@
 import java.util.*;
 
 public class Main {
-    static int n, m, x;
-    static ArrayList<Node>[] list;
-    static int[][] dist;
+
+    static final int INF = Integer.MAX_VALUE;
+    static int N, M, X;
+    static List<List<Node>> graph = new ArrayList<>();
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        N = sc.nextInt();
+        M = sc.nextInt();
+        X = sc.nextInt();
 
-        n = sc.nextInt();
-        m = sc.nextInt();
-        x = sc.nextInt();
-
-        dist = new int[n + 1][n + 1];
-        list = new ArrayList[n + 1];
-        for (int i = 1; i <= n; i++) {
-            list[i] = new ArrayList<>();
+        for (int i = 0; i <= N; i++) graph.add(new ArrayList<>());
+        for (int i = 0; i < M; i++) {
+            int from = sc.nextInt();
+            int to = sc.nextInt();
+            int time = sc.nextInt();
+            graph.get(from).add(new Node(to, time));
         }
 
-        for (int i = 1; i <= n; i++) {
-            Arrays.fill(dist[i], 987654321);
+        int[][] dists = new int[N + 1][N + 1];
+        for (int i = 1; i <= N ; i++) dists[i] = dijkstra(i);
+        int[] back = dijkstra(X);
+
+        int answer = -1;
+        for (int i = 1; i <= N; i++) {
+            int cost = back[i] + dists[i][X];
+            answer = Math.max(answer, cost);
         }
 
-        for (int i = 0; i < m; i++) {
-            int start = sc.nextInt();
-            int end = sc.nextInt();
-            int w = sc.nextInt();
-            list[start].add(new Node(end, w));
-        }
-
-        for (int i = 1; i <= n; i++) {
-            djistra(i);
-        }
-
-        int max = 0;
-        for (int i = 1; i <= n; i++) {
-            max = Math.max(max, dist[i][x] + dist[x][i]);
-        }
-
-        System.out.println(max);
-        sc.close();
+        System.out.println(answer);
     }
 
-    public static void djistra(int start) {
+    private static int[] dijkstra(int start) {
+        int[] dist = new int[N + 1];
+        Arrays.fill(dist, INF);
+
         PriorityQueue<Node> pq = new PriorityQueue<>();
-        boolean[] visited = new boolean[n + 1];
-        pq.add(new Node(start, 0));
-        dist[start][start] = 0;
-
+        pq.offer(new Node(start, 0));
+        dist[start] = 0;
         while (!pq.isEmpty()) {
-            Node n = pq.poll();
-            int curr = n.city;
+            Node cur = pq.poll();
+            int now = cur.v;
+            int time = cur.time;
 
-            if (visited[curr]) continue;
-            visited[curr] = true;
+            if (dist[now] < time) continue;
 
-            for (Node l : list[curr]) {
-                int next = l.city;
-                int weight = l.w;
-
-                if (dist[start][next] > dist[start][curr] + weight) {
-                    dist[start][next] = dist[start][curr] + weight;
-                    pq.add(new Node(next, dist[start][next]));
+            for (Node next : graph.get(now)) {
+                int nextCost = next.time + dist[now];
+                if (dist[next.v] > nextCost) {
+                    dist[next.v] = nextCost;
+                    pq.offer(new Node(next.v, nextCost));
                 }
             }
         }
-    }
-}
-
-class Node implements Comparable<Node> {
-    int city, w;
-
-    Node(int city, int w) {
-        this.city = city;
-        this.w = w;
+        return dist;
     }
 
-    public int compareTo(Node o) {
-        return this.w - o.w;
+
+    static class Node implements Comparable<Node> {
+        int v;
+        int time;
+
+        public Node(int v, int time) {
+            this.v = v;
+            this.time = time;
+        }
+
+        @Override
+        public int compareTo(Node o) {
+            return this.time - o.time;
+        }
     }
+
 }
